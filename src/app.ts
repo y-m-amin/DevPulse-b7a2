@@ -4,6 +4,9 @@ import helmet from "helmet";
 import morgan from "morgan";
 
 import authRoutes from "./modules/auth/auth.routes";
+import issuesRoutes from "./modules/issues/issues.routes";
+import metricsRoutes from "./modules/metrics/metrics.routes";
+
 import { notFoundMiddleware } from "./middlewares/not-found.middleware";
 import { errorMiddleware } from "./middlewares/error.middleware";
 
@@ -22,6 +25,8 @@ app.get("/health", (_req, res) => {
 });
 
 app.use("/api/auth", authRoutes);
+app.use("/api/issues", issuesRoutes);
+app.use("/api/metrics", metricsRoutes);
 
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);
