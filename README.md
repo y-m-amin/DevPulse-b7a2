@@ -1,24 +1,8 @@
 # DevPulse
-### Internal Tech Issue & Feature Tracker API
+
+Internal Tech Issue & Feature Tracker API
 
 A backend API for software teams to report bugs, suggest feature requests, and coordinate issue resolution.
-
-This project uses Node.js, TypeScript, Express.js, PostgreSQL through Neon DB, JWT authentication, role-based authorization, bcrypt password hashing, and raw SQL through the native `pg` driver.
-
----
-
-## Features
-
-- User registration and login
-- JWT-based authentication
-- Role-based authorization
-- Contributor and maintainer roles
-- Create bug reports and feature requests
-- Public issue listing and issue details
-- Maintainer-only issue deletion
-- Maintainer-only internal metrics
-- Raw SQL queries using `pool.query()`
-- Neon PostgreSQL database support
 
 ---
 
@@ -26,7 +10,7 @@ This project uses Node.js, TypeScript, Express.js, PostgreSQL through Neon DB, J
 
 | Technology | Purpose |
 |---|---|
-| Node.js | Runtime |
+| Node.js 24.x+ | Runtime |
 | TypeScript | Type-safe JavaScript |
 | Express.js | API framework |
 | PostgreSQL | Relational database |
@@ -35,7 +19,7 @@ This project uses Node.js, TypeScript, Express.js, PostgreSQL through Neon DB, J
 | bcrypt | Password hashing |
 | jsonwebtoken | JWT creation and verification |
 | dotenv | Environment variable loading |
-| helmet | Basic API security headers |
+| helmet | Security headers |
 | cors | Cross-origin request support |
 | morgan | HTTP request logging |
 | http-status-codes | Standard HTTP status references |
@@ -44,54 +28,44 @@ This project uses Node.js, TypeScript, Express.js, PostgreSQL through Neon DB, J
 
 ## Project Structure
 
-```txt
-internal-tech-tracker-api/
-│
+```
+devpulse/
 ├── src/
 │   ├── config/
-│   │   ├── env.ts
-│   │   └── db.ts
-│   │
+│   │   ├── db.ts
+│   │   └── env.ts
 │   ├── middlewares/
 │   │   ├── auth.middleware.ts
 │   │   ├── role.middleware.ts
 │   │   ├── error.middleware.ts
 │   │   └── not-found.middleware.ts
-│   │
 │   ├── modules/
 │   │   ├── auth/
 │   │   │   ├── auth.controller.ts
 │   │   │   ├── auth.routes.ts
 │   │   │   ├── auth.service.ts
 │   │   │   └── auth.validation.ts
-│   │   │
 │   │   ├── issues/
 │   │   │   ├── issues.controller.ts
 │   │   │   ├── issues.routes.ts
 │   │   │   ├── issues.service.ts
 │   │   │   └── issues.validation.ts
-│   │   │
 │   │   └── metrics/
 │   │       ├── metrics.controller.ts
 │   │       ├── metrics.routes.ts
 │   │       └── metrics.service.ts
-│   │
 │   ├── sql/
 │   │   └── schema.sql
-│   │
 │   ├── types/
 │   │   └── express.d.ts
-│   │
 │   ├── utils/
 │   │   ├── api-response.ts
 │   │   ├── app-error.ts
 │   │   ├── async-handler.ts
 │   │   ├── jwt.ts
 │   │   └── password.ts
-│   │
 │   ├── app.ts
 │   └── server.ts
-│
 ├── .env
 ├── .env.example
 ├── .gitignore
@@ -101,29 +75,39 @@ internal-tech-tracker-api/
 └── tsconfig.json
 ```
 
-Requirements
+---
 
-Install the following before running the project:
+## Requirements
 
-Node.js 24.x or higher
-npm
-Neon PostgreSQL database
-Thunder Client, Postman, or another API client
-Installation
+- Node.js 24.x or higher
+- npm
+- Neon PostgreSQL database
+- Thunder Client, Postman, or another API client
+
+---
+
+## Installation
 
 Clone the project:
+
+```bash
+git clone https://github.com/y-m-amin/DevPulse-b7a2
+cd DevPulse-b7a2
 ```
-git clone <your-repository-url>
-cd internal-tech-tracker-api
-```
+
 Install dependencies:
-```
+
+```bash
 npm install
 ```
-Environment Variables
 
-Create a .env file in the project root:
-```
+---
+
+## Environment Variables
+
+Create a `.env` file in the project root:
+
+```env
 NODE_ENV=development
 PORT=5000
 
@@ -134,143 +118,131 @@ JWT_EXPIRES_IN=7d
 
 BCRYPT_SALT_ROUNDS=10
 ```
-Create .env.example for reference:
-```
-NODE_ENV=development
-PORT=5000
-DATABASE_URL=
-JWT_SECRET=
-JWT_EXPIRES_IN=7d
-BCRYPT_SALT_ROUNDS=10
-```
-Never commit the real .env file.
 
-Database Setup
+A `.env.example` is included for reference. Never commit the real `.env` file.
 
-This project uses Neon PostgreSQL.
+---
 
-Run the SQL schema from:
-```
-src/sql/schema.sql
-```
-You can run it using the Neon SQL Editor.
+## Database Setup
 
-Tables
+This project uses Neon PostgreSQL. Run the schema from `src/sql/schema.sql` using the Neon SQL Editor.
 
-The database contains two main tables:
+The schema creates two tables: `users` and `issues`.
 
-users
-issues
-Important Database Rules
-Passwords are stored as bcrypt hashes.
-Issue reporter_id is validated through application logic.
-No SQL foreign key constraint is required for reporter_id.
-No SQL JOINs are used in the application.
-Reporter details are fetched separately from issues.
-Run the Project
+Key rules:
+- Passwords are stored as bcrypt hashes and never returned in responses
+- `reporter_id` is validated in application logic — no foreign key constraint required
+- No SQL JOINs are used; reporter details are fetched separately and merged in TypeScript
 
-Development mode:
-```
+---
+
+## Running the Project
+
+```bash
+# Development mode
 npm run dev
-```
-Build TypeScript:
-```
+
+# Build TypeScript
 npm run build
-```
-Run production build:
-```
+
+# Run production build
 npm start
-Health Check
+```
+
+### Health Check
+
+```
 GET /health
 ```
-Example:
-```
-http://localhost:5000/health
 
-Response:
-
+```json
 {
   "success": true,
   "message": "API is running"
 }
 ```
-User Roles
-Contributor
 
-A contributor can:
+---
 
-Register
-Login
-Create issues
-View all issues
-View a single issue
-Update their own open issue
+## User Roles
 
-A contributor cannot:
+### Contributor
 
-Update another user's issue
-Update issue status
-Update resolved or in-progress issues
-Delete issues
-Access internal metrics
-Maintainer
+- Register and log in
+- Create issues (bug or feature request)
+- View all issues and single issue details
+- Update their own issue when status is `open`
 
-A maintainer can:
+Cannot: update another user's issue, update issue status, delete issues, or access metrics.
 
-Do everything a contributor can
-Update any issue
-Update issue status
-Delete any issue
-Access internal metrics
-Authentication
+### Maintainer
 
-After login, the API returns a JWT token.
+- All contributor permissions
+- Update any issue including status
+- Delete any issue
+- Access internal system metrics
 
-Protected endpoints require the token in the request header:
+---
+
+## Authentication
+
+After login, attach the returned JWT to protected requests:
+
 ```
 Authorization: <JWT_TOKEN>
 ```
-The API also supports:
+
+Bearer format is also supported:
+
 ```
 Authorization: Bearer <JWT_TOKEN>
-Main API Modules
-Module	Base Route
-Auth	/api/auth
-Issues	/api/issues
-Metrics	/api/metrics
 ```
-Detailed endpoint documentation is available in:
 
-API_DOCS.md
-Standard Success Response
-```
+---
+
+## API Modules
+
+| Module | Base Route |
+|---|---|
+| Auth | `/api/auth` |
+| Issues | `/api/issues` |
+| Metrics | `/api/metrics` |
+
+Full endpoint documentation is in `API_DOCS.md`.
+
+---
+
+## Response Format
+
+Success:
+
+```json
 {
   "success": true,
   "message": "Operation completed successfully",
   "data": {}
 }
 ```
-Some GET endpoints may return:
-```
-{
-  "success": true,
-  "data": []
-}
-```
-Standard Error Response
-```
+
+Error:
+
+```json
 {
   "success": false,
   "message": "Error description",
   "errors": "Optional error details"
 }
 ```
-Useful Test Accounts
 
-Create these through the signup endpoint.
+---
 
-Contributor
-```
+## Test Accounts
+
+Create these via the signup endpoint.
+
+**Contributor**
+
+```json
 {
   "name": "Test Contributor",
   "email": "contributor@test.com",
@@ -278,8 +250,10 @@ Contributor
   "role": "contributor"
 }
 ```
-Maintainer
-```
+
+**Maintainer**
+
+```json
 {
   "name": "Test Maintainer",
   "email": "maintainer@test.com",
@@ -287,37 +261,15 @@ Maintainer
   "role": "maintainer"
 }
 ```
-Development Notes
 
-This project intentionally avoids:
+---
 
-ORMs
-Query builders
-SQL JOINs
+## Development Notes
 
-Use only raw SQL through:
+This project intentionally avoids ORMs, query builders, and SQL JOINs. All database access uses raw `pool.query()` calls.
 
-pool.query()
-
-When related data is required, fetch records separately in application logic.
-
-Example:
-
-- Fetch issues.
-- Extract reporter IDs.
-- Fetch users by IDs.
-- Map reporter data to issues in TypeScript.
-- Recommended Testing Flow
-- Start server.
-- Test /health.
-- Signup contributor.
-- Login contributor.
-- Create issue.
-- Get all issues.
-- Get single issue.
-- Signup maintainer.
-- Login maintainer.
-- Update issue status as maintainer.
-- Delete issue as maintainer.
-- Test internal metrics as maintainer.
-- Confirm contributor cannot access maintainer-only endpoints.
+When related data is needed (e.g. reporter details on issues), the pattern is:
+1. Fetch issues
+2. Extract unique reporter IDs
+3. Fetch users with `WHERE id = ANY($1::int[])`
+4. Map reporter data onto issues in TypeScript
