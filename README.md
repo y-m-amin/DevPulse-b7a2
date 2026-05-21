@@ -307,17 +307,17 @@ Example:
 - Extract reporter IDs.
 - Fetch users by IDs.
 - Map reporter data to issues in TypeScript.
-Recommended Testing Flow
-Start server.
-Test /health.
-Signup contributor.
-Login contributor.
-Create issue.
-Get all issues.
-Get single issue.
-Signup maintainer.
-Login maintainer.
-Update issue status as maintainer.
-Delete issue as maintainer.
-Test internal metrics as maintainer.
-Confirm contributor cannot access maintainer-only endpoints.
+- Recommended Testing Flow
+- Start server.
+- Test /health.
+- Signup contributor.
+- Login contributor.
+- Create issue.
+- Get all issues.
+- Get single issue.
+- Signup maintainer.
+- Login maintainer.
+- Update issue status as maintainer.
+- Delete issue as maintainer.
+- Test internal metrics as maintainer.
+- Confirm contributor cannot access maintainer-only endpoints.
