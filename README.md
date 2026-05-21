@@ -99,7 +99,7 @@ internal-tech-tracker-api/
 ├── package.json
 ├── README.md
 └── tsconfig.json
-
+```
 
 Requirements
 
@@ -303,10 +303,10 @@ When related data is required, fetch records separately in application logic.
 
 Example:
 
-Fetch issues.
-Extract reporter IDs.
-Fetch users by IDs.
-Map reporter data to issues in TypeScript.
+- Fetch issues.
+- Extract reporter IDs.
+- Fetch users by IDs.
+- Map reporter data to issues in TypeScript.
 Recommended Testing Flow
 Start server.
 Test /health.
