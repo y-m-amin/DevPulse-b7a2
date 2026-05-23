@@ -208,7 +208,7 @@ Authorization: Bearer <JWT_TOKEN>
 | Issues | `/api/issues` |
 | Metrics | `/api/metrics` |
 
-Full endpoint documentation is in `API_DOCS.md`.
+Full endpoint documentation is in [API_DOCS.md](./API_DOCS.md).
 
 ---
 
