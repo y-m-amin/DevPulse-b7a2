@@ -36,7 +36,7 @@ export const getAllIssuesController = asyncHandler(async (req: Request, res: Res
 });
 
 export const getSingleIssueController = asyncHandler(async (req: Request, res: Response) => {
-  const issueId = validateIssueId(req.params.id);
+  const issueId = validateIssueId(String(req.params.id));
   const issue = await getIssueById(issueId);
 
   sendData(res, StatusCodes.OK, issue);
@@ -47,7 +47,7 @@ export const updateIssueController = asyncHandler(async (req: Request, res: Resp
     throw new AppError("Authentication required", StatusCodes.UNAUTHORIZED);
   }
 
-  const issueId = validateIssueId(req.params.id);
+  const issueId = validateIssueId(String(req.params.id));
   const input = validateUpdateIssueBody(req.body);
 
   const issue = await updateIssue(issueId, input, req.user);
@@ -56,7 +56,7 @@ export const updateIssueController = asyncHandler(async (req: Request, res: Resp
 });
 
 export const deleteIssueController = asyncHandler(async (req: Request, res: Response) => {
-  const issueId = validateIssueId(req.params.id);
+  const issueId = validateIssueId(String(req.params.id));
 
   await deleteIssue(issueId);
 

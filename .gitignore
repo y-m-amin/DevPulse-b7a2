@@ -54,3 +54,7 @@ temp/
 # Test output
 junit.xml
 test-results/
+
+# Local API test script
+test-api.js
+.vercel
