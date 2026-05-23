@@ -1,3 +1,4 @@
+// src/server.ts
 import app from "./app";
 import { env } from "./config/env";
 import { testDbConnection } from "./config/db";
